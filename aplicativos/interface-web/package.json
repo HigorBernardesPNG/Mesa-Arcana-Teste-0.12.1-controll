@@ -1,0 +1,26 @@
+{
+  "name": "@mesa-rpg/interface-web",
+  "version": "0.12.1-teste.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "desenvolvimento": "vite --host 0.0.0.0 --port 5173",
+    "construir": "vite build",
+    "verificar": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mesa-rpg/dominio": "*",
+    "@mesa-rpg/protocolo": "*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "socket.io-client": "^4.8.3",
+    "qrcode.react": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  }
+}

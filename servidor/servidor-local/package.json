@@ -1,0 +1,25 @@
+{
+  "name": "@mesa-rpg/servidor-local",
+  "version": "0.12.1-teste.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "desenvolvimento": "tsx watch src/servidor.ts",
+    "iniciar": "tsx src/servidor.ts",
+    "verificar": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@mesa-rpg/dominio": "*",
+    "@mesa-rpg/protocolo": "*",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "exports": {
+    ".": "./src/servidor.ts"
+  },
+  "types": "./src/servidor.ts"
+}

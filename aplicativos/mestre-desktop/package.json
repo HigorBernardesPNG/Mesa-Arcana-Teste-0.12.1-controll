@@ -1,0 +1,21 @@
+{
+  "name": "@mesa-rpg/mestre-desktop",
+  "version": "0.12.1-teste.1",
+  "private": true,
+  "type": "module",
+  "main": "dist/principal/principal.cjs",
+  "scripts": {
+    "desenvolvimento": "echo \"Use npm run executar:aplicativo na raiz para executar a versao desktop empacotada localmente.\"",
+    "construir": "npm run limpar && esbuild principal/principal.ts --bundle --platform=node --format=cjs --target=node22 --external:electron --outfile=dist/principal/principal.cjs && esbuild preload/preload.ts --bundle --platform=node --format=cjs --target=node22 --external:electron --outfile=dist/preload/preload.cjs",
+    "limpar": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "verificar": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@mesa-rpg/servidor-local": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^7.0.2",
+    "esbuild": "^0.25.10"
+  }
+}

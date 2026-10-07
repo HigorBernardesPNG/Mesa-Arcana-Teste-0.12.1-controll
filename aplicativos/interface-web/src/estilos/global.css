@@ -1,0 +1,2619 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #ece8df;
+  background: #090b0d;
+  font-synthesis: none;
+  --fundo: #090b0d;
+  --painel: #101419;
+  --painel-2: #151a20;
+  --linha: #2b3036;
+  --ouro: #c5944b;
+  --ouro-claro: #e1b86e;
+  --texto-2: #9da4ad;
+  --verde: #65c96f;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at top, #17130e 0, var(--fundo) 42%); }
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .45; }
+.pagina-centralizada { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.cartao-inicial { width: min(460px, 100%); border: 1px solid #4a3b28; background: rgba(15,18,21,.96); padding: 38px; border-radius: 16px; box-shadow: 0 30px 80px #0008; }
+.marca { color: var(--ouro-claro); font-family: Georgia, serif; font-size: 34px; font-weight: 700; letter-spacing: .03em; }
+.marca-menor { color: var(--ouro-claro); font-family: Georgia, serif; font-size: 20px; }
+.subtitulo, .texto-secundario, small { color: var(--texto-2); }
+.acoes-iniciais { display: grid; gap: 12px; margin: 30px 0 18px; }
+.botao-principal, .botao-secundario { border-radius: 8px; min-height: 48px; padding: 0 18px; border: 1px solid #564125; color: #f4ead8; background: #211b13; }
+.botao-principal { background: linear-gradient(#a67533, #765022); color: white; border-color: #d1a45f; font-weight: 700; }
+.formulario-entrada { display: grid; gap: 18px; }
+.formulario-entrada label { display: grid; gap: 7px; color: #d5d0c8; }
+.formulario-entrada input { background: #090c0f; border: 1px solid var(--linha); border-radius: 7px; padding: 13px; color: white; outline: none; }
+.formulario-entrada input:focus { border-color: var(--ouro); }
+.aplicacao { min-height: 100vh; background: #080a0c; }
+.barra-superior { height: 58px; display: flex; align-items: center; gap: 28px; padding: 0 20px; border-bottom: 1px solid #403421; background: #0d1013; }
+.espacador { flex: 1; }
+.indicador-online { color: var(--verde); }
+.layout-mestre, .layout-jogador { min-height: calc(100vh - 265px); display: grid; grid-template-columns: 250px minmax(420px, 1fr) 280px; gap: 8px; padding: 8px; }
+.painel { background: var(--painel); border: 1px solid #292f35; border-radius: 8px; }
+.lateral, .lateral-direita { padding: 16px; }
+.painel h2 { margin: 0 0 14px; font-size: 16px; color: #e7dfd1; }
+.menu-lateral { display: grid; gap: 6px; }
+.menu-lateral button { text-align: left; padding: 10px 12px; color: #d6d9db; background: #12171c; border: 1px solid transparent; border-radius: 6px; }
+.menu-lateral button:hover { border-color: #594525; background: #191b1c; }
+.bloco-sessao, .jogadores-conectados { display: grid; gap: 7px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--linha); }
+.codigo-sessao { color: var(--ouro-claro); letter-spacing: .18em; font-size: 24px; }
+.centro-mesa { position: relative; min-height: 480px; border: 1px solid #594525; border-radius: 8px; overflow: hidden; background: #111; }
+.barra-ferramentas { position: absolute; z-index: 3; top: 12px; left: 12px; background: #0c0f12e8; border: 1px solid #584523; border-radius: 6px; padding: 8px 12px; color: #b9b5ac; font-size: 13px; }
+.mapa-demonstracao { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 35% 35%, #4a3622 0 3%, transparent 14%), radial-gradient(circle at 72% 28%, #50361d 0 2%, transparent 10%), linear-gradient(135deg, #24231f, #11171b 52%, #17120e); }
+.mapa-demonstracao:before { content:""; position:absolute; inset:0; opacity:.55; background: radial-gradient(circle at 20% 80%, #c77a2338, transparent 22%), radial-gradient(circle at 80% 20%, #c77a232b, transparent 20%); }
+.grade { position: absolute; inset: 0; background-image: linear-gradient(#7c8d9a30 1px, transparent 1px), linear-gradient(90deg, #7c8d9a30 1px, transparent 1px); background-size: 8.333% 10%; }
+.peca { position: absolute; width: 48px; height: 48px; display:grid; place-items:center; border-radius:50%; background:#171a1d; border:3px solid; font-weight:800; z-index:2; box-shadow: 0 5px 14px #000a; }
+.peca-azul { border-color:#4ca5ff; }.peca-verde { border-color:#69d36f; }.peca-vermelha { border-color:#e6534c; }.peca-roxa { border-color:#9f62e5; }
+.cartao-entidade { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--linha); }
+.retrato-entidade, .avatar-jogador { display:grid; place-items:center; border-radius:50%; background:#342414; color:#e6bb78; border:2px solid #97662c; font-weight:800; }
+.retrato-entidade { width:54px; height:54px; }.avatar-jogador { width:76px; height:76px; margin-bottom:12px; font-size:28px; }
+.cartao-entidade div { display:grid; }.linha-dado { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--linha); }
+.acoes-entidade { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:20px; }.acoes-entidade button { border:1px solid #5a4526; background:#201911; color:#e9e0d2; border-radius:6px; padding:9px 4px; }
+.rodape-mesa { height: 199px; display:grid; grid-template-columns:minmax(420px,.8fr) 1.2fr; gap:8px; padding:0 8px 8px; }
+.dados, .historico { padding:14px; min-height:0; }.lista-dados { display:flex; gap:8px; flex-wrap:wrap; }.lista-dados button { width:58px; height:58px; border-radius:10px; border:1px solid #3c4650; color:#e7e7e7; background:linear-gradient(145deg,#1c2732,#101419); font-weight:700; }
+.lista-historico { height:130px; overflow:auto; }.item-historico { display:grid; grid-template-columns:54px 1fr; gap:8px; padding:5px 0; border-bottom:1px solid #20262b; font-size:13px; }.item-historico time { color:#78818b; }
+.aviso-erro { margin:8px; padding:10px 14px; border:1px solid #783936; border-radius:6px; background:#381918; color:#ffbbb7; }
+.metricas { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:18px 0; }.metricas div { display:grid; padding:12px; border:1px solid var(--linha); border-radius:7px; background:#0c1014; }.metricas span { color:var(--texto-2); font-size:12px; }.metricas b { font-size:22px; }
+@media (max-width: 1050px) { .layout-mestre,.layout-jogador { grid-template-columns:210px 1fr; }.lateral-direita { display:none; }.rodape-mesa { grid-template-columns:1fr 1fr; } }
+@media (max-width: 760px) { .barra-superior { gap:12px; font-size:13px; }.layout-mestre,.layout-jogador { grid-template-columns:1fr; }.lateral { display:none; }.centro-mesa { min-height:58vh; }.rodape-mesa { height:auto; grid-template-columns:1fr; }.historico { min-height:180px; } }
+
+/* Etapa 3 - mapa funcional e experiencia visual */
+.botao-compacto { min-height: 34px; border: 1px solid #564125; border-radius: 6px; background: #1b1712; color: #eee3d3; padding: 6px 10px; }
+.link-sessao { overflow-wrap: anywhere; line-height: 1.35; }
+.acoes-tema { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.acoes-tema button, .acoes-visuais-futuras button { border: 1px solid #3f3528; border-radius: 6px; background: #151719; color: #d9d4ca; padding: 8px; }
+.acoes-visuais-futuras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 16px 0 10px; }
+.painel-jogador-simples { align-content: start; }
+.mapa-mesa { position: absolute; inset: 0; overflow: hidden; background-color: #151515; }
+.mapa-mesa::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .9; }
+.tema-ruinas::before { background: radial-gradient(circle at 25% 35%, #8d582c66 0 3%, transparent 14%), radial-gradient(circle at 78% 72%, #b66c2444 0 2%, transparent 15%), linear-gradient(135deg, #30271e, #15191b 48%, #21160f); }
+.tema-floresta::before { background: radial-gradient(circle at 20% 20%, #567a3b66 0 6%, transparent 18%), radial-gradient(circle at 78% 65%, #4c713a66 0 7%, transparent 20%), linear-gradient(135deg, #172119, #253522 46%, #0f1714); }
+.tema-masmorra::before { background: radial-gradient(circle at 70% 18%, #8e5b2840 0 3%, transparent 13%), linear-gradient(135deg, #242426, #101214 45%, #1a1717); }
+.grade-interativa { position: absolute; inset: 0; display: grid; z-index: 1; }
+.celula-grade { min-width: 0; min-height: 0; border: 0; border-right: 1px solid #96a6b326; border-bottom: 1px solid #96a6b326; background: transparent; padding: 0; }
+.celula-grade:hover { background: #e2b66b14; box-shadow: inset 0 0 0 1px #d4a45755; }
+.peca { position: absolute; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: #11161a; border: 3px solid; color: #fff; font-weight: 800; z-index: 3; box-shadow: 0 5px 14px #000a; }
+.peca:hover { transform: scale(1.06); }
+.peca-propria { border-color: #63d475; box-shadow: 0 0 0 3px #63d47525, 0 5px 14px #000a; }
+.peca-personagem { border-color: #4ca5ff; }
+.peca-npc { border-color: #d3a24e; }
+.peca-monstro { border-color: #e6534c; }
+.peca-selecionada { outline: 3px solid #f1d18c; outline-offset: 3px; }
+.legenda-mapa { position: absolute; right: 12px; bottom: 10px; z-index: 4; padding: 6px 9px; border-radius: 5px; border: 1px solid #5a4526; background: #090c0ed9; color: #cdbd9f; font-size: 12px; }
+
+/* Etapa 4 - campanha, mapas personalizados, tokens e QR Code */
+.lateral input, .lateral select { width: 100%; min-height: 36px; border: 1px solid #343b42; border-radius: 6px; background: #0c1014; color: #ece8df; padding: 7px 9px; }
+.lateral label { color: #aaa49a; font-size: 12px; }
+.formulario-compacto { display: grid; gap: 7px; }
+.duas-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.duas-colunas label { display: grid; gap: 5px; }
+.controle-faixa { display: grid; gap: 5px; }
+.controle-faixa input { padding: 0; min-height: 26px; }
+.botao-arquivo { display: grid; place-items: center; min-height: 36px; border: 1px dashed #665036; border-radius: 6px; background: #17130f; color: #dfcfb6 !important; padding: 7px 9px; cursor: pointer; text-align: center; }
+.botao-arquivo input { display: none; }
+.qr-sessao { display: grid; place-items: center; width: fit-content; margin: 4px auto; padding: 7px; background: #f3eee5; border-radius: 8px; }
+.preview-token { width: 58px; height: 58px; object-fit: cover; border-radius: 50%; border: 2px solid #9b7139; margin: 2px auto; }
+.botao-perigo { width: 100%; margin-top: 16px; padding: 9px; border: 1px solid #7f3e37; border-radius: 6px; background: #321916; color: #ffb8b0; }
+.mapa-mesa { background-position: center; background-size: cover; background-repeat: no-repeat; }
+.tema-personalizado::before { background: linear-gradient(#00000008, #00000008); }
+.peca[style*="background-image"], .retrato-entidade[style*="background-image"] { background-position: center; background-size: cover; background-repeat: no-repeat; }
+.texto-token-acessivel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 760px) { .qr-sessao { display: none; } }
+.preview-token-jogador { width: 76px; height: 76px; }
+.avatar-jogador { background-position: center; background-size: cover; background-repeat: no-repeat; }
+
+/* Etapa 4.1 - refinamentos de usabilidade antes da persistencia */
+.centro-mesa { overflow: hidden; height: calc(100vh - 265px); min-height: 480px; }
+.viewport-mapa { position: absolute; inset: 0; overflow: auto; z-index: 1; }
+.mapa-mesa { position: relative; inset: auto; min-width: 100%; min-height: 100%; margin: 0; }
+.grade-interativa { z-index: 2; }
+.celula-grade { border-right-color: #c6d1d95c; border-bottom-color: #c6d1d95c; }
+.celula-grade.marco-grade { border-right-color: #d5be8880; border-bottom-color: #d5be8880; }
+.modo-alinhamento-grid .celula-grade { border-right: 2px solid #f2c96cd9; border-bottom: 2px solid #f2c96cd9; background: #e6b95d0a; }
+.modo-alinhamento-grid .celula-grade.marco-grade { border-right-color: #fff1b8; border-bottom-color: #fff1b8; box-shadow: inset -1px -1px 0 #6c4b1c; }
+.rotulo-grade { display: inline-grid; place-items: center; min-width: 19px; height: 19px; padding: 0 4px; border-radius: 4px; background: #0b0d0fe8; color: #ffe7a5; font-size: 10px; font-weight: 800; pointer-events: none; }
+.botao-ativo { border-color: #dbac58 !important; background: #3c2b15 !important; color: #ffe0a1 !important; box-shadow: inset 0 0 0 1px #8b6328; }
+.controles-zoom { position: absolute; z-index: 12; right: 14px; bottom: 14px; display: grid; grid-template-columns: 38px 66px 38px; gap: 4px; padding: 5px; border: 1px solid #5d4930; border-radius: 8px; background: #0a0d10e8; box-shadow: 0 6px 18px #0008; }
+.controles-zoom button { min-height: 34px; border: 1px solid #393f45; border-radius: 6px; background: #171b1f; color: #ece6da; font-weight: 700; }
+.controles-zoom button:hover:not(:disabled) { border-color: #b28447; background: #241d14; }
+.controles-zoom .zoom-valor { font-size: 12px; color: #e6c78f; }
+.qr-sessao { width: 224px; max-width: 100%; margin: 7px auto; padding: 7px; background: #fff; border: 1px solid #d9d9d9; border-radius: 10px; }
+.qr-sessao canvas { display: block; width: 100% !important; height: auto !important; image-rendering: pixelated; }
+.texto-centralizado { display: block; text-align: center; }
+.seletor-rede { display: grid; gap: 5px; }
+.editor-entidade-privada { display: grid; gap: 9px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--linha); }
+.editor-entidade-privada label { display: grid; gap: 5px; color: #aaa49a; font-size: 12px; }
+.editor-entidade-privada input { width: 100%; min-height: 36px; border: 1px solid #343b42; border-radius: 6px; background: #0c1014; color: #ece8df; padding: 7px 9px; }
+.cabecalho-editor-privado { display: grid; gap: 2px; }
+.cabecalho-editor-privado strong { color: #e6c78f; font-size: 13px; }
+.lateral-direita { overflow-y: auto; }
+
+@media (max-width: 760px) {
+  .centro-mesa { height: 58vh; min-height: 360px; }
+  .controles-zoom { right: 10px; bottom: 10px; grid-template-columns: 36px 58px 36px; }
+  .qr-sessao { display: grid; }
+}
+/* Etapa 4.1.1 - correcao do layout vertical no desktop */
+@media (min-width: 761px) {
+  .layout-mestre, .layout-jogador {
+    height: max(360px, calc(100vh - 265px));
+    min-height: 0;
+    overflow: hidden;
+    align-items: stretch;
+  }
+
+  .layout-mestre > .lateral,
+  .layout-jogador > .lateral,
+  .layout-mestre > .lateral-direita,
+  .layout-jogador > .lateral-direita {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .centro-mesa {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .layout-mestre, .layout-jogador {
+    height: auto;
+    overflow: visible;
+  }
+}
+
+/* Etapa 4.1.2 - polimento de hierarquia e densidade visual */
+.barra-superior {
+  height: 52px;
+  gap: 18px;
+  padding: 0 18px;
+  font-size: 13px;
+  background: #0b0e11;
+}
+.marca-menor { font-size: 19px; letter-spacing: .015em; }
+.indicador-online {
+  padding: 4px 8px;
+  border: 1px solid #285a32;
+  border-radius: 999px;
+  background: #102016;
+  font-size: 12px;
+}
+
+.layout-mestre {
+  grid-template-columns: 230px minmax(520px, 1fr) 248px;
+  gap: 10px;
+  padding: 10px 10px 8px;
+}
+.layout-mestre .painel { border-radius: 10px; }
+.layout-mestre .lateral,
+.layout-mestre .lateral-direita { padding: 12px; }
+.layout-mestre .painel h2 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  letter-spacing: .01em;
+}
+
+.layout-mestre .lateral input,
+.layout-mestre .lateral select,
+.layout-mestre .editor-entidade-privada input {
+  min-height: 32px;
+  padding: 5px 8px;
+  font-size: 13px;
+}
+.layout-mestre .botao-compacto,
+.layout-mestre .botao-arquivo {
+  min-height: 32px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.layout-mestre .formulario-compacto { gap: 6px; }
+.layout-mestre .formulario-compacto .botao-compacto { min-height: 30px; }
+
+.secao-recolhivel {
+  display: block;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #252b30;
+}
+.secao-recolhivel summary {
+  position: relative;
+  list-style: none;
+  padding: 2px 18px 2px 0;
+  color: #ddd5c8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+.secao-recolhivel summary::-webkit-details-marker { display: none; }
+.secao-recolhivel summary::after {
+  content: '›';
+  position: absolute;
+  right: 2px;
+  top: -1px;
+  color: #a9895c;
+  font-size: 18px;
+  line-height: 1;
+  transform: rotate(90deg);
+  transition: transform .15s ease;
+}
+.secao-recolhivel:not([open]) summary::after { transform: rotate(0deg); }
+.secao-recolhivel[open] > summary { margin-bottom: 9px; }
+.secao-recolhivel > *:not(summary) { margin-top: 7px; }
+.secao-recolhivel > .duas-colunas,
+.secao-recolhivel > .acoes-tema,
+.secao-recolhivel > .acoes-convite { margin-top: 7px; }
+.secao-recolhivel > .botao-compacto,
+.secao-recolhivel > .botao-arquivo,
+.secao-recolhivel > input,
+.secao-recolhivel > select { width: 100%; }
+
+.codigo-sessao {
+  display: block;
+  font-size: 20px;
+  letter-spacing: .2em;
+  line-height: 1.1;
+}
+.qr-sessao {
+  width: 156px;
+  margin: 6px auto 3px;
+  padding: 5px;
+  border-radius: 8px;
+}
+.texto-centralizado { font-size: 10px; }
+.link-sessao {
+  display: block;
+  max-height: 30px;
+  overflow: hidden;
+  font-size: 10px;
+  color: #7894ad;
+}
+.acoes-convite {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.acoes-convite .botao-compacto { min-width: 0; }
+
+.layout-mestre .duas-colunas { gap: 6px; }
+.layout-mestre .controle-faixa { gap: 3px; }
+.layout-mestre .controle-faixa input { min-height: 20px; }
+.layout-mestre .acoes-tema {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+.layout-mestre .acoes-tema button {
+  min-width: 0;
+  padding: 6px 3px;
+  font-size: 11px;
+}
+.lista-conectados { display: grid; gap: 4px; }
+
+.centro-mesa {
+  border-radius: 10px;
+  box-shadow: 0 10px 28px #0005;
+}
+.barra-ferramentas {
+  top: 10px;
+  left: 10px;
+  padding: 6px 9px;
+  font-size: 11px;
+  background: #090c0ede;
+}
+.controles-zoom {
+  right: 10px;
+  bottom: 10px;
+  grid-template-columns: 34px 58px 34px;
+  padding: 4px;
+}
+.controles-zoom button { min-height: 30px; }
+
+.layout-mestre .cartao-entidade {
+  gap: 9px;
+  padding: 8px 0 10px;
+}
+.layout-mestre .retrato-entidade { width: 44px; height: 44px; }
+.layout-mestre .linha-dado { padding: 8px 0; font-size: 12px; }
+.layout-mestre .editor-entidade-privada {
+  gap: 7px;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.layout-mestre .editor-entidade-privada label { gap: 3px; font-size: 11px; }
+.layout-mestre .botao-perigo { margin-top: 10px; padding: 7px; font-size: 12px; }
+
+.rodape-mesa {
+  height: 132px;
+  grid-template-columns: 350px minmax(0, 1fr);
+  gap: 10px;
+  padding: 0 10px 10px;
+}
+.rodape-mesa .dados,
+.rodape-mesa .historico { padding: 10px 12px; }
+.rodape-mesa .painel h2 { margin-bottom: 8px; font-size: 13px; }
+.lista-dados { gap: 6px; flex-wrap: nowrap; }
+.lista-dados button {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.lista-historico { height: 82px; }
+.item-historico {
+  grid-template-columns: 48px 1fr;
+  gap: 7px;
+  padding: 3px 0;
+  font-size: 11px;
+}
+
+.layout-mestre > .lateral,
+.layout-mestre > .lateral-direita {
+  scrollbar-width: thin;
+  scrollbar-color: #555b61 transparent;
+}
+.layout-mestre > .lateral::-webkit-scrollbar,
+.layout-mestre > .lateral-direita::-webkit-scrollbar { width: 6px; }
+.layout-mestre > .lateral::-webkit-scrollbar-thumb,
+.layout-mestre > .lateral-direita::-webkit-scrollbar-thumb {
+  background: #555b61;
+  border-radius: 999px;
+}
+
+@media (min-width: 1061px) {
+  .layout-mestre {
+    height: calc(100vh - 184px);
+    min-height: 430px;
+  }
+  .layout-mestre .centro-mesa { height: 100%; }
+}
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .layout-mestre {
+    grid-template-columns: 210px minmax(430px, 1fr) 225px;
+  }
+  .qr-sessao { width: 140px; }
+  .rodape-mesa { grid-template-columns: 315px minmax(0, 1fr); }
+}
+
+@media (max-width: 1050px) {
+  .layout-mestre { grid-template-columns: 210px 1fr; }
+  .layout-mestre .lateral-direita { display: none; }
+}
+
+@media (max-width: 760px) {
+  .barra-superior { height: 50px; padding: 0 12px; }
+  .layout-mestre { height: auto; padding: 8px; }
+  .rodape-mesa { height: auto; grid-template-columns: 1fr; padding: 0 8px 8px; }
+  .lista-dados { flex-wrap: wrap; }
+  .lista-historico { height: 150px; }
+  .qr-sessao { width: 180px; }
+}
+
+
+/* Etapa 4.1.4 - fundo do mapa acompanha integralmente a area do grid */
+.mapa-mesa {
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.qr-sessao {
+  width: 176px;
+  aspect-ratio: 1 / 1;
+  padding: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.qr-sessao canvas { display: none !important; }
+.qr-sessao svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1;
+  shape-rendering: crispEdges;
+}
+
+.nome-mapa-flutuante {
+  position: absolute;
+  z-index: 13;
+  right: 10px;
+  bottom: 51px;
+  max-width: min(300px, calc(100% - 20px));
+  padding: 5px 9px;
+  overflow: hidden;
+  border: 1px solid #5d4930;
+  border-radius: 6px;
+  background: #0a0d10e8;
+  color: #d8c8aa;
+  font-size: 11px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px #0006;
+  pointer-events: none;
+}
+
+@media (min-width: 761px) and (max-width: 1180px) {
+  .qr-sessao { width: 164px; }
+}
+
+@media (max-width: 760px) {
+  .qr-sessao { width: 180px; }
+  .nome-mapa-flutuante {
+    right: 10px;
+    bottom: 49px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+/* Etapa 4.2 - foco visual de combate, sem rolagem de dados */
+.acoes-combate {
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+.cabecalho-acoes-combate {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.cabecalho-acoes-combate h2 { margin: 0 !important; }
+.cabecalho-acoes-combate small { font-size: 10px; white-space: nowrap; }
+.seletores-combate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+.seletores-combate label {
+  display: grid;
+  gap: 3px;
+  color: #9da4ad;
+  font-size: 10px;
+}
+.seletores-combate select {
+  width: 100%;
+  min-width: 0;
+  height: 27px;
+  padding: 2px 6px;
+  border: 1px solid #343b42;
+  border-radius: 6px;
+  background: #0c1014;
+  color: #ece8df;
+  font-size: 11px;
+}
+.resumo-acao-jogador {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+.resumo-acao-jogador span {
+  min-width: 0;
+  padding: 5px 7px;
+  border: 1px solid #272e34;
+  border-radius: 6px;
+  background: #0c1014;
+}
+.resumo-acao-jogador small,
+.resumo-acao-jogador b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.resumo-acao-jogador small { font-size: 9px; }
+.resumo-acao-jogador b { margin-top: 1px; font-size: 11px; }
+.botoes-acoes-visuais {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.acao-visual {
+  min-width: 0;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid #3d454d;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #1a2026, #101419);
+  color: #e9e4dc;
+  font-size: 11px;
+  font-weight: 700;
+}
+.acao-visual span { font-size: 16px; line-height: 1; }
+.acao-espada:hover:not(:disabled) { border-color: #c8645f; background: #2b1718; }
+.acao-flecha:hover:not(:disabled) { border-color: #b79a59; background: #292317; }
+.acao-magia:hover:not(:disabled) { border-color: #8c6bd1; background: #21182e; }
+.botao-estado-morte {
+  width: 100%;
+  min-height: 27px;
+  margin-top: 6px;
+  border: 1px solid #723a38;
+  border-radius: 6px;
+  background: #251313;
+  color: #efaaa6;
+  font-size: 10px;
+}
+.botao-reanimar {
+  border-color: #375c42;
+  background: #132219;
+  color: #9bd0a6;
+}
+
+.peca {
+  background-size: cover;
+  background-position: center;
+}
+.peca-atacando { animation: pulso-atacante .45s ease-out; }
+.peca-impactada { animation: tremor-impacto .38s ease-out; }
+.peca-morta {
+  filter: grayscale(.8) brightness(.55);
+  box-shadow: 0 0 0 3px #111a, 0 5px 14px #000a;
+}
+.marcador-morte {
+  position: absolute;
+  inset: -7px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #05060780;
+  color: #f0ece4;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 2px 5px #000;
+  pointer-events: none;
+}
+.efeito-combate {
+  position: absolute;
+  z-index: 8;
+  width: 72px;
+  height: 72px;
+  margin: -36px 0 0 -36px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.simbolo-efeito {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  font-size: 34px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 5px #000b);
+}
+.impacto-efeito {
+  position: absolute;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.efeito-espada .simbolo-efeito { animation: golpe-espada .75s ease-out forwards; color: #f1f2f3; }
+.efeito-espada .impacto-efeito {
+  background: radial-gradient(circle, #da2b2be8 0 15%, #8d1111ba 16% 34%, transparent 60%);
+  animation: sangue-impacto .8s ease-out forwards;
+}
+.efeito-flecha .simbolo-efeito { color: #e7c877; animation: flecha-impacto .8s cubic-bezier(.15,.8,.3,1) forwards; }
+.efeito-flecha .impacto-efeito {
+  border: 2px solid #d3b66c;
+  animation: onda-impacto .75s ease-out forwards;
+}
+.efeito-magia .simbolo-efeito {
+  color: #c594ff;
+  text-shadow: 0 0 10px #8a55ff, 0 0 22px #6c35e7;
+  animation: magia-impacto .9s ease-out forwards;
+}
+.efeito-magia .impacto-efeito {
+  background: radial-gradient(circle, #ffffff 0 5%, #b776ffcc 16% 28%, #6f38e588 35%, transparent 68%);
+  box-shadow: 0 0 22px #985cff;
+  animation: explosao-magia .9s ease-out forwards;
+}
+
+@keyframes pulso-atacante {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.16); box-shadow: 0 0 18px #f0c878aa; }
+  100% { transform: scale(1); }
+}
+@keyframes tremor-impacto {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+}
+@keyframes golpe-espada {
+  0% { opacity: 0; transform: translate(-25px,-24px) rotate(-70deg) scale(.5); }
+  35% { opacity: 1; transform: translate(5px,4px) rotate(18deg) scale(1.15); }
+  100% { opacity: 0; transform: translate(16px,12px) rotate(48deg) scale(.9); }
+}
+@keyframes sangue-impacto {
+  0% { opacity: 0; transform: scale(.2); }
+  35% { opacity: 1; transform: scale(1.35); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+@keyframes flecha-impacto {
+  0% { opacity: 0; transform: translate(-58px,-28px) rotate(-32deg) scale(.7); }
+  55% { opacity: 1; transform: translate(0,0) rotate(-32deg) scale(1.1); }
+  100% { opacity: 0; transform: translate(8px,5px) rotate(-32deg) scale(.85); }
+}
+@keyframes onda-impacto {
+  0% { opacity: .9; transform: scale(.2); }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+@keyframes magia-impacto {
+  0% { opacity: 0; transform: scale(.2) rotate(-35deg); }
+  40% { opacity: 1; transform: scale(1.35) rotate(15deg); }
+  100% { opacity: 0; transform: scale(.7) rotate(65deg); }
+}
+@keyframes explosao-magia {
+  0% { opacity: 0; transform: scale(.15); }
+  35% { opacity: 1; transform: scale(1.6); }
+  100% { opacity: 0; transform: scale(2.4); }
+}
+
+@media (max-width: 760px) {
+  .acoes-combate { min-height: 132px; }
+  .seletores-combate { grid-template-columns: 1fr 1fr; }
+  .botoes-acoes-visuais { gap: 5px; }
+  .acao-visual { min-height: 40px; }
+}
+
+/* Etapa 4.2.1 - controle de ataques por responsabilidade */
+.dica-acao-jogador {
+  display: block;
+  margin: -1px 0 6px;
+  color: #b6a989;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+/* Etapa 4.3 - catalogo visual de magias por classe e nivel */
+.formulario-entrada select {
+  min-height: 43px;
+  padding: 0 12px;
+  border: 1px solid var(--linha);
+  border-radius: 7px;
+  background: #090c0f;
+  color: #fff;
+}
+.duas-colunas-formulario { display: grid; grid-template-columns: 1.6fr .7fr; gap: 10px; }
+.botoes-acoes-visuais.duas-acoes { grid-template-columns: repeat(2, 1fr); }
+.painel-acoes-completas {
+  min-width: 0;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 205px minmax(0, 1fr);
+  gap: 8px;
+  overflow: visible;
+}
+.painel-acoes-completas > .acoes-combate {
+  border: 0;
+  border-right: 1px solid #282e34;
+  border-radius: 0;
+  background: transparent;
+  padding: 6px 9px 6px 4px;
+}
+.painel-magias { min-width: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 6px; padding: 4px 2px; position: relative; }
+.cabecalho-magias { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.cabecalho-magias strong { font-size: 12px; color: #e8dfcf; }
+.cabecalho-magias small { font-size: 9px; }
+.lista-magias {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 4px;
+  padding: 1px 5px 1px 1px;
+}
+.item-magia {
+  position: relative;
+  min-width: 0;
+  min-height: 34px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px;
+  border: 1px solid #30383f;
+  border-radius: 6px;
+  background: #0c1115;
+  color: #ece7dd;
+  text-align: left;
+}
+.item-magia:hover, .item-magia:focus-visible { border-color: #7557a8; background: #171121; z-index: 25; }
+.item-magia-selecionada { border-color: #a77bdc; background: #21162d; box-shadow: inset 0 0 0 1px #5f397f; }
+.icone-magia { display: grid; place-items: center; color: #c796ff; font-size: 16px; text-shadow: 0 0 7px #7e43c9; }
+.nome-magia { min-width: 0; display: grid; }
+.nome-magia b, .nome-magia small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nome-magia b { font-size: 10px; font-weight: 700; }
+.nome-magia small { font-size: 8px; color: #8f98a1; }
+.magia-selecionada-resumo {
+  display: grid;
+  gap: 5px;
+  padding-top: 6px;
+  border-top: 1px solid #282e34;
+}
+.magia-selecionada-resumo > div:first-child { min-width: 0; display: grid; gap: 1px; }
+.magia-selecionada-resumo > div:first-child b { font-size: 11px; color: #dcc0fb; }
+.magia-selecionada-resumo > div:first-child small { font-size: 9px; line-height: 1.3; }
+.magia-metricas { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.magia-metricas span { display: flex; justify-content: space-between; gap: 4px; padding: 4px 6px; border: 1px solid #292f35; border-radius: 5px; background: #0b0f13; color: #8f98a1; font-size: 9px; }
+.magia-metricas b { color: #e7dfd2; font-size: 9px; }
+.dica-magia { font-size: 9px; color: #b7a4ca; }
+.acoes-magia-selecionada { display: grid; grid-template-columns: .7fr 1fr; gap: 5px; }
+.acoes-magia-selecionada button { min-height: 26px; border-radius: 5px; font-size: 10px; font-weight: 700; }
+.botao-cancelar-magia { border: 1px solid #3d444b; background: #15191d; color: #bfc3c6; }
+.botao-conjurar-magia { border: 1px solid #7e55ad; background: #3c2055; color: #f0dcff; }
+.texto-magias-vazio { margin: 5px 0; font-size: 10px; }
+.modo-selecao-magia .celula-grade { cursor: crosshair; }
+.celula-area-magia { background: #8d4fd936 !important; box-shadow: inset 0 0 0 2px #c78cff9e; }
+.celula-efeito-magia { animation: area-magia-impacto 1.45s ease-out; }
+.barra-magia { border-color: #76509d; color: #dcc4f3; background: #170f20e8; }
+@keyframes area-magia-impacto {
+  0% { background: #f4e8ffcc; box-shadow: inset 0 0 18px #fff, 0 0 16px #9b5be9; }
+  28% { background: #9a59e58f; box-shadow: inset 0 0 12px #dcbaff; }
+  100% { background: transparent; box-shadow: none; }
+}
+
+@media (max-width: 1050px) {
+  .painel-acoes-completas { grid-template-columns: 180px minmax(0, 1fr); }
+  .lista-magias { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .duas-colunas-formulario { grid-template-columns: 1fr 110px; }
+  .painel-acoes-completas { grid-template-columns: 1fr; overflow: visible; }
+  .painel-acoes-completas > .acoes-combate { border-right: 0; border-bottom: 1px solid #282e34; padding: 6px 4px 9px; }
+  .painel-magias { max-height: 300px; }
+  .lista-magias { grid-template-columns: 1fr 1fr; max-height: 130px; }
+  .tooltip-magia { display: none !important; }
+}
+.tooltip-magia-flutuante {
+  position: fixed;
+  z-index: 200;
+  width: min(276px, calc(100vw - 24px));
+  display: grid;
+  gap: 4px;
+  padding: 9px 10px;
+  border: 1px solid #674990;
+  border-radius: 7px;
+  background: #100d16f7;
+  box-shadow: 0 10px 28px #000c;
+  pointer-events: none;
+}
+.tooltip-magia-flutuante b { color: #e3c8ff; font-size: 12px; }
+.tooltip-magia-flutuante small { color: #b8b0c2; font-size: 10px; line-height: 1.35; }
+@media (max-width: 760px) { .tooltip-magia-flutuante { display: none; } }
+
+/* Etapa 4.3.2 - efeitos persistentes de magia e histórico detalhado */
+.celula-efeito-magia-ativo {
+  background: #7040a52e !important;
+  box-shadow: inset 0 0 0 1px #a873d55e;
+}
+.rotulo-efeito-magia-ativo {
+  position: absolute;
+  z-index: 14;
+  transform: translate(-50%, -50%);
+  display: grid;
+  gap: 1px;
+  max-width: 150px;
+  padding: 4px 7px;
+  border: 1px solid #a777d4aa;
+  border-radius: 6px;
+  background: #160d20df;
+  box-shadow: 0 4px 14px #0009, 0 0 14px #7d45b34a;
+  color: #ead7ff;
+  pointer-events: none;
+  text-align: center;
+}
+.rotulo-efeito-magia-ativo b { font-size: 9px; line-height: 1.1; }
+.rotulo-efeito-magia-ativo small { color: #c7addf; font-size: 8px; }
+.marcador-efeito-token {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  min-width: max-content;
+  padding: 2px 5px;
+  border: 1px solid #9e6acb;
+  border-radius: 999px;
+  background: #1a1024ed;
+  box-shadow: 0 2px 8px #000b;
+  color: #ead7ff;
+  font-size: 7px;
+  line-height: 1.1;
+  pointer-events: none;
+}
+.painel-efeitos-ativos {
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #293037;
+}
+.painel-efeitos-ativos.mestre { margin-top: 3px; padding-top: 2px; border-top: 0; }
+.cabecalho-efeitos-ativos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cabecalho-efeitos-ativos > div { display: grid; gap: 1px; }
+.cabecalho-efeitos-ativos strong { color: #e6d8ef; font-size: 11px; }
+.cabecalho-efeitos-ativos small { color: #9099a1; font-size: 9px; }
+.botao-avancar-rodada {
+  min-height: 26px;
+  padding: 4px 8px;
+  border: 1px solid #6f4e8d;
+  border-radius: 6px;
+  background: #24152f;
+  color: #e5cff5;
+  font-size: 9px;
+  font-weight: 700;
+}
+.lista-efeitos-ativos { display: grid; gap: 5px; }
+.item-efeito-ativo {
+  display: grid;
+  gap: 3px;
+  padding: 6px;
+  border: 1px solid #2d3239;
+  border-radius: 6px;
+  background: #0b0f13;
+}
+.item-efeito-ativo > small { color: #8f98a1; font-size: 8px; line-height: 1.3; }
+.linha-efeito-ativo {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 5px;
+}
+.icone-efeito-ativo { color: #c18ef0; text-align: center; }
+.linha-efeito-ativo > div { min-width: 0; display: grid; }
+.linha-efeito-ativo b { overflow: hidden; color: #e7d7f3; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.linha-efeito-ativo small { color: #a998b8; font-size: 8px; }
+.linha-efeito-ativo button {
+  min-height: 22px;
+  padding: 2px 6px;
+  border: 1px solid #5b3b70;
+  border-radius: 5px;
+  background: #21142a;
+  color: #d8c3e6;
+  font-size: 8px;
+}
+.conteudo-item-historico { min-width: 0; display: grid; gap: 3px; }
+.detalhes-historico { color: #8e969e; font-size: 9px; }
+.detalhes-historico summary { width: fit-content; cursor: pointer; color: #a994ba; font-size: 8px; }
+.detalhes-historico small { display: block; margin-top: 2px; padding-left: 8px; color: #89929a; line-height: 1.3; }
+.item-historico-magia .conteudo-item-historico > span { color: #d8bee9; }
+
+@media (max-width: 760px) {
+  .rotulo-efeito-magia-ativo { max-width: 120px; padding: 3px 5px; }
+  .marcador-efeito-token { bottom: -10px; font-size: 6px; }
+  .painel-efeitos-ativos { margin-top: 6px; padding-top: 6px; }
+}
+
+/* Etapa 4.4 - escala oficial, tamanhos e deslocamento */
+.tres-colunas-formulario {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) 90px;
+  gap: 8px;
+}
+.texto-escala-grid {
+  display: block;
+  margin: 2px 0 6px;
+  color: #b9aa8a;
+  font-size: 9px;
+}
+.celula-alcance-movimento {
+  background: #4e9f6830 !important;
+  box-shadow: inset 0 0 0 1px #79d08d78;
+}
+.celula-alcance-movimento:hover {
+  background: #67bd8045 !important;
+  box-shadow: inset 0 0 0 2px #8de3a1a8;
+}
+.barra-ferramentas-movimento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-right: 6px;
+}
+.barra-ferramentas-movimento button {
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid #5a4930;
+  border-radius: 5px;
+  background: #17130eeb;
+  color: #d7c49a;
+  font-size: 9px;
+  white-space: nowrap;
+}
+.barra-ferramentas-movimento button.botao-ativo {
+  border-color: #b4873d;
+  background: #33230f;
+  color: #ffe0a2;
+}
+
+@media (max-width: 760px) {
+  .tres-colunas-formulario { grid-template-columns: 1fr 1fr; }
+  .tres-colunas-formulario label:last-child { grid-column: span 2; }
+  .barra-ferramentas-movimento { align-items: flex-start; }
+}
+
+/* Etapa 4.5 - iluminacao, visao racial e fontes de luz */
+.camada-iluminacao {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  pointer-events: none;
+}
+.celula-iluminacao {
+  min-width: 0;
+  min-height: 0;
+  transition: background-color .18s ease, backdrop-filter .18s ease;
+}
+.iluminacao-claro { background: transparent; }
+.iluminacao-penumbra { background: #02040745; }
+.iluminacao-visao-escuro {
+  background: #02050955;
+  backdrop-filter: grayscale(1) brightness(.82);
+}
+.iluminacao-escuro { background: #010203e8; }
+.iluminacao-escuridao-magica {
+  background: #010104f2;
+  box-shadow: inset 0 0 8px #37214b55;
+}
+.mapa-mesa .peca { z-index: 6; }
+.mapa-mesa .peca-propria { z-index: 7; }
+.peca-oculta-escuridao {
+  opacity: 0;
+  pointer-events: none;
+}
+.peca-visao-escuro {
+  filter: grayscale(1) brightness(.78);
+}
+.marcador-tocha {
+  position: absolute;
+  z-index: 9;
+  right: -7px;
+  top: -9px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #d59a42;
+  border-radius: 50%;
+  background: #261707ed;
+  box-shadow: 0 0 10px #e29a38aa;
+  font-size: 10px;
+  pointer-events: none;
+}
+.botao-tocha {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 8px;
+  border: 1px solid #66513b;
+  border-radius: 6px;
+  background: #1c1711;
+  color: #e2cda8;
+  font-size: 10px;
+}
+.botao-tocha-acesa {
+  border-color: #c98a32;
+  background: #35210e;
+  color: #ffd58d;
+  box-shadow: inset 0 0 0 1px #714618, 0 0 10px #ce812233;
+}
+.controle-tocha-jogador {
+  display: grid;
+  gap: 3px;
+  margin-top: 8px;
+}
+.controle-tocha-jogador small {
+  text-align: center;
+  font-size: 8px;
+  color: #bda57a;
+}
+
+@media (max-width: 760px) {
+  .iluminacao-penumbra { background: #02040752; }
+  .iluminacao-escuro { background: #010203ee; }
+  .marcador-tocha { width: 16px; height: 16px; font-size: 9px; }
+}
+
+/* Etapa 4.6 - layout redimensionável e curadoria visual de magias */
+.corpo-mesa-redimensionavel {
+  --largura-painel-esquerdo: 230px;
+  --largura-painel-direito: 248px;
+  --altura-rodape-mesa: 178px;
+  height: calc(100vh - 52px);
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(300px, 1fr) 8px var(--altura-rodape-mesa);
+  overflow: hidden;
+}
+
+@media (min-width: 1051px) {
+  .corpo-mesa-redimensionavel .layout-mestre,
+  .corpo-mesa-redimensionavel .layout-jogador {
+    height: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: var(--largura-painel-esquerdo) 8px minmax(430px, 1fr) 8px var(--largura-painel-direito) !important;
+    gap: 4px !important;
+    padding: 8px 10px 4px !important;
+    overflow: hidden;
+  }
+  .corpo-mesa-redimensionavel .rodape-mesa {
+    height: 100% !important;
+    min-height: 0;
+    padding: 4px 10px 10px;
+  }
+}
+
+.divisor-layout {
+  position: relative;
+  z-index: 35;
+  display: grid;
+  place-items: center;
+  user-select: none;
+  touch-action: none;
+}
+.divisor-layout span {
+  display: block;
+  border-radius: 999px;
+  background: #4c535a;
+  transition: background .15s ease, box-shadow .15s ease;
+}
+.divisor-layout:hover span { background: var(--ouro); box-shadow: 0 0 10px #c5944b55; }
+.divisor-layout-vertical { cursor: col-resize; min-width: 8px; }
+.divisor-layout-vertical span { width: 2px; height: 42px; }
+.divisor-layout-horizontal { cursor: row-resize; min-height: 8px; margin: 0 10px; }
+.divisor-layout-horizontal span { width: 54px; height: 2px; }
+.redimensionando-layout { cursor: grabbing !important; user-select: none !important; }
+.botao-layout {
+  min-height: 28px;
+  padding: 3px 8px;
+  border: 1px solid #343b42;
+  border-radius: 6px;
+  background: #11161a;
+  color: #b9bec3;
+  font-size: 11px;
+}
+.botao-layout:hover { border-color: #74582e; color: #e8d6b9; }
+
+.cabecalho-magias > div { min-width: 0; display: grid; gap: 1px; }
+.botao-gerenciar-magias {
+  flex: 0 0 auto;
+  min-height: 25px;
+  padding: 3px 7px;
+  border: 1px solid #5e4579;
+  border-radius: 5px;
+  background: #1b1323;
+  color: #d6b9f2;
+  font-size: 9px;
+}
+.estado-vazio-magias {
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  border: 1px dashed #59456c;
+  border-radius: 7px;
+  background: #100d15;
+  color: #d9c8e8;
+}
+.estado-vazio-magias b { font-size: 11px; }
+.estado-vazio-magias small { max-width: 250px; font-size: 9px; text-align: center; }
+.marcadores-magia { min-width: 0; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
+.selo-magia {
+  display: inline-flex;
+  align-items: center;
+  min-height: 14px;
+  padding: 1px 4px;
+  border: 1px solid #3d4650;
+  border-radius: 999px;
+  background: #151a20;
+  color: #aeb7bf;
+  font-size: 7px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.selo-truque { border-color: #4e6474; color: #a9d0e6; background: #101b22; }
+.selo-nivel { border-color: #594373; color: #d3b4ee; background: #191020; }
+.selo-acao-bonus { border-color: #765d2f; color: #e3c178; background: #20190d; }
+.selo-racial { border-color: #35634e; color: #9bd8bb; background: #0e1c16; }
+.nome-magia .marcadores-magia { margin-top: 2px; max-height: 18px; overflow: hidden; }
+.tooltip-magia-flutuante .marcadores-magia { margin: 1px 0 2px; }
+
+.sobreposicao-modal-magias {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #050608c7;
+  backdrop-filter: blur(3px);
+}
+.modal-magias {
+  width: min(720px, 96vw);
+  max-height: min(760px, 90vh);
+  display: grid;
+  grid-template-rows: auto auto auto minmax(160px, 1fr) auto;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #58416e;
+  border-radius: 12px;
+  background: #0d1115;
+  box-shadow: 0 28px 80px #000d;
+}
+.modal-magias > header { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.modal-magias > header > div { display: grid; gap: 2px; }
+.modal-magias > header b { color: #eadcf6; font-size: 15px; }
+.modal-magias > header small { font-size: 10px; }
+.modal-magias > header button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #343b42;
+  border-radius: 6px;
+  background: #15191e;
+  color: #d7dce0;
+  font-size: 20px;
+  line-height: 1;
+}
+.pesquisa-magias {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 11px;
+  border: 1px solid #39424a;
+  border-radius: 7px;
+  outline: none;
+  background: #090d11;
+  color: #f1ede7;
+}
+.pesquisa-magias:focus { border-color: #7657a0; box-shadow: 0 0 0 2px #7657a022; }
+.aviso-regra-racial {
+  padding: 7px 9px;
+  border: 1px solid #355b49;
+  border-radius: 6px;
+  background: #0c1712;
+  color: #a9cfbd;
+  font-size: 9px;
+}
+.lista-selecao-magias {
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 6px;
+  padding-right: 4px;
+}
+.opcao-selecao-magia {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: start;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid #293138;
+  border-radius: 7px;
+  background: #0b0f13;
+  cursor: pointer;
+}
+.opcao-selecao-magia:hover { border-color: #55406d; }
+.opcao-selecao-magia-ativa { border-color: #7656a1; background: #171020; box-shadow: inset 0 0 0 1px #52366b; }
+.opcao-selecao-magia input { margin-top: 2px; accent-color: #9568c5; }
+.conteudo-opcao-magia { min-width: 0; display: grid; gap: 4px; }
+.conteudo-opcao-magia > b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: #e8e2d9; }
+.conteudo-opcao-magia > small { font-size: 8px; color: #8f99a2; }
+.modal-magias > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 9px;
+  border-top: 1px solid #272e34;
+  color: #9ea6ad;
+  font-size: 10px;
+}
+.modal-magias > footer > div { display: flex; gap: 6px; }
+.modal-magias > footer button { min-height: 30px; padding: 5px 10px; border-radius: 6px; }
+
+@media (max-width: 1050px) and (min-width: 761px) {
+  .corpo-mesa-redimensionavel .layout-mestre,
+  .corpo-mesa-redimensionavel .layout-jogador {
+    height: 100% !important;
+    grid-template-columns: var(--largura-painel-esquerdo) 8px minmax(430px, 1fr) !important;
+    gap: 4px !important;
+  }
+  .corpo-mesa-redimensionavel .layout-mestre > .divisor-layout-vertical:nth-of-type(2),
+  .corpo-mesa-redimensionavel .layout-jogador > .divisor-layout-vertical:nth-of-type(2),
+  .corpo-mesa-redimensionavel .layout-mestre > .lateral-direita,
+  .corpo-mesa-redimensionavel .layout-jogador > .lateral-direita { display: none !important; }
+}
+
+@media (max-width: 760px) {
+  .corpo-mesa-redimensionavel { height: auto; display: block; overflow: visible; }
+  .corpo-mesa-redimensionavel .layout-mestre,
+  .corpo-mesa-redimensionavel .layout-jogador { height: auto !important; grid-template-columns: 1fr !important; }
+  .divisor-layout { display: none !important; }
+  .corpo-mesa-redimensionavel .rodape-mesa { height: auto !important; }
+  .botao-layout { display: none; }
+  .lista-selecao-magias { grid-template-columns: 1fr; }
+  .modal-magias { max-height: 92vh; }
+}
+
+@media (min-width: 761px) {
+  .corpo-mesa-redimensionavel .rodape-mesa > .painel { min-height: 0; overflow: hidden; }
+  .corpo-mesa-redimensionavel .rodape-mesa .historico {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .corpo-mesa-redimensionavel .rodape-mesa .lista-historico {
+    height: auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .corpo-mesa-redimensionavel .painel-acoes-completas { min-height: 0; }
+  .corpo-mesa-redimensionavel .painel-magias { min-height: 0; overflow: hidden; }
+}
+.botao-definir-racial {
+  justify-self: start;
+  min-height: 22px;
+  padding: 3px 7px;
+  border: 1px solid #355b49;
+  border-radius: 999px;
+  background: #0d1713;
+  color: #91c6ac;
+  font-size: 8px;
+}
+.botao-definir-racial-ativo {
+  border-color: #4f8b6e;
+  background: #12251c;
+  color: #b9e8d0;
+  box-shadow: 0 0 0 1px #315b46 inset;
+}
+
+@media (min-width: 761px) {
+  .corpo-mesa-redimensionavel .rodape-mesa {
+    grid-template-columns: minmax(240px, var(--largura-painel-acoes)) 8px minmax(360px, 1fr) !important;
+    gap: 4px !important;
+  }
+  .corpo-mesa-redimensionavel .rodape-mesa > .divisor-layout-vertical { height: 100%; }
+}
+@media (max-width: 760px) {
+  .corpo-mesa-redimensionavel .rodape-mesa { grid-template-columns: 1fr !important; }
+}
+
+/* Etapa 4.6.1 - variações raciais e ação racial do Draconato */
+.acao-racial-draconato {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid #282e34;
+}
+.botao-acao-racial {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 7px;
+  border: 1px solid #6b4930;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #261710, #17100c);
+  color: #f3e6d6;
+  text-align: left;
+}
+.botao-acao-racial:hover { border-color: #c4773b; background: #2e1b11; }
+.botao-acao-racial > span:nth-child(2) { min-width: 0; }
+.botao-acao-racial b,
+.botao-acao-racial small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.botao-acao-racial b { font-size: 11px; }
+.botao-acao-racial small { margin-top: 2px; font-size: 9px; color: #b9a995; }
+.icone-acao-racial { font-size: 16px; text-align: center; }
+.selo-acao-racial {
+  padding: 2px 5px;
+  border: 1px solid #8a5932;
+  border-radius: 999px;
+  color: #e8b47b;
+  font-size: 8px;
+  white-space: nowrap;
+}
+.acao-racial-ativa .botao-acao-racial { border-color: #dd8b43; box-shadow: inset 0 0 0 1px #dd8b4322; }
+.preparacao-acao-racial { display: grid; gap: 5px; margin-top: 5px; }
+.preparacao-acao-racial > small,
+.observacao-acao-racial { font-size: 9px; color: #9da4ad; line-height: 1.35; }
+.preparacao-acao-racial > div { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.observacao-acao-racial { display: block; margin-top: 5px; }
+
+
+/* Etapa 4.6.2 - deslocamento efetivo e validação visual de magias */
+.controle-deslocamento-jogador {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 10px;
+  padding: 9px;
+  border: 1px solid #2c3742;
+  border-radius: 8px;
+  background: #0c1117;
+}
+.controle-deslocamento-cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.controle-deslocamento-cabecalho span { font-size: 12px; font-weight: 700; }
+.controle-deslocamento-cabecalho small { color: #98a6b6; text-align: right; }
+.controle-deslocamento-acoes {
+  display: grid;
+  grid-template-columns: minmax(64px, .75fr) 1fr 1fr;
+  gap: 6px;
+}
+.controle-deslocamento-acoes input,
+.controle-deslocamento-acoes button {
+  min-width: 0;
+  height: 32px;
+  padding: 5px 7px;
+}
+.botao-secundario-compacto { opacity: .8; }
+.aviso-magia-bloqueada {
+  display: block;
+  margin-top: 5px;
+  padding: 6px 8px;
+  border: 1px solid #7c532f;
+  border-radius: 6px;
+  background: #281b12;
+  color: #f0bf86;
+}
+
+/* Etapa 4.7 - identidade visual Mesa Arcana e refinamento UI/UX
+   Importante: esta camada altera apenas apresentação. As regras e fluxos funcionais
+   permanecem os mesmos da Etapa 4.6.2. */
+:root {
+  --arcano-fundo: #061019;
+  --arcano-fundo-profundo: #03080d;
+  --arcano-painel: #0a131c;
+  --arcano-painel-2: #0d1822;
+  --arcano-painel-3: #111e29;
+  --arcano-linha: #243644;
+  --arcano-linha-suave: #182733;
+  --arcano-ouro: #c9933e;
+  --arcano-ouro-claro: #f0c46d;
+  --arcano-ouro-apagado: #806537;
+  --arcano-texto: #edf1f3;
+  --arcano-texto-2: #a5b2bc;
+  --arcano-verde: #50d47d;
+  --arcano-vermelho: #e65d59;
+  --arcano-azul: #4aa8e8;
+  --fundo: var(--arcano-fundo-profundo);
+  --painel: var(--arcano-painel);
+  --painel-2: var(--arcano-painel-2);
+  --linha: var(--arcano-linha);
+  --ouro: var(--arcano-ouro);
+  --ouro-claro: var(--arcano-ouro-claro);
+  --texto-2: var(--arcano-texto-2);
+  --verde: var(--arcano-verde);
+}
+
+html { background: var(--arcano-fundo-profundo); }
+body {
+  color: var(--arcano-texto);
+  background:
+    radial-gradient(circle at 52% -18%, #173247 0, transparent 38%),
+    linear-gradient(180deg, #07111a 0%, #03080d 72%);
+}
+body, button, input, select, textarea { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+button, input, select { transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease, color .16s ease, transform .12s ease; }
+button:active:not(:disabled) { transform: translateY(1px); }
+
+/* Marca */
+.marca, .marca-menor {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--arcano-ouro-claro);
+  text-shadow: 0 1px 18px #d79d4422;
+}
+.marca-menor {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+  font-size: 20px;
+  letter-spacing: .01em;
+}
+.marca-simbolo {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid #b88337;
+  border-radius: 50%;
+  color: #f0c46d;
+  background: radial-gradient(circle, #2a2112 0 36%, #0b141b 38% 100%);
+  box-shadow: inset 0 0 0 3px #0a1118, 0 0 22px #c68f3620;
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+.marca-simbolo-grande { width: 42px; height: 42px; font-size: 21px; vertical-align: middle; margin-right: 10px; }
+
+/* Estrutura principal */
+.aplicacao {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% 0%, #112536 0, transparent 33%),
+    linear-gradient(180deg, #061019 0%, #03080d 100%);
+}
+.barra-superior {
+  height: 58px;
+  padding: 0 16px;
+  gap: 16px;
+  color: #dfe7ec;
+  border-bottom: 1px solid #6e5227;
+  background: linear-gradient(180deg, #08131c 0%, #060d13 100%);
+  box-shadow: 0 7px 28px #0005;
+  position: relative;
+  z-index: 40;
+}
+.identidade-sessao { color: #aebac4; }
+.identidade-sessao b { color: #eff2f3; font-weight: 650; }
+.selo-cabecalho {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  border: 1px solid #263846;
+  border-radius: 7px;
+  background: #08121a;
+  color: #9eabb5;
+  white-space: nowrap;
+}
+.selo-cabecalho b { color: #e7edf0; }
+.indicador-online {
+  border-color: #24603c;
+  background: #071b12;
+  color: #64df8b;
+  box-shadow: inset 0 0 0 1px #3aa05a16;
+}
+.botao-layout {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #293b49;
+  border-radius: 7px;
+  background: #0a151e;
+  color: #bac6ce;
+}
+.botao-layout:hover { border-color: #8c6b37; color: #f0c46d; }
+
+.corpo-mesa-redimensionavel { padding: 0; }
+.corpo-mesa-redimensionavel .layout-mestre,
+.corpo-mesa-redimensionavel .layout-jogador {
+  gap: 4px !important;
+  padding: 8px !important;
+  background: #040a0f;
+}
+.painel,
+.centro-mesa {
+  border-color: #243746;
+  background: linear-gradient(180deg, #0b151e 0%, #081119 100%);
+  box-shadow: inset 0 1px 0 #ffffff08, 0 8px 24px #0002;
+}
+.layout-mestre .painel,
+.layout-jogador .painel,
+.centro-mesa { border-radius: 8px; }
+.lateral, .lateral-direita { scrollbar-width: thin; scrollbar-color: #465563 #0a1117; }
+.lateral::-webkit-scrollbar, .lateral-direita::-webkit-scrollbar, .lista-historico::-webkit-scrollbar { width: 7px; height: 7px; }
+.lateral::-webkit-scrollbar-thumb, .lateral-direita::-webkit-scrollbar-thumb, .lista-historico::-webkit-scrollbar-thumb { background: #465563; border-radius: 10px; }
+.lateral::-webkit-scrollbar-track, .lateral-direita::-webkit-scrollbar-track, .lista-historico::-webkit-scrollbar-track { background: #091018; }
+
+/* Painéis e títulos */
+.painel h2,
+.cabecalho-acoes-combate h2 {
+  color: #f0e5d3;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.layout-mestre .lateral > h2,
+.layout-jogador .lateral > h2,
+.lateral-direita > h2 {
+  position: sticky;
+  top: -12px;
+  z-index: 3;
+  margin: -12px -12px 10px;
+  padding: 13px 12px 11px;
+  border-bottom: 1px solid #273846;
+  background: #0a141dcf;
+  backdrop-filter: blur(12px);
+}
+.secao-recolhivel {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top-color: #1f303d;
+}
+.secao-recolhivel summary {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  color: #e6e9e9;
+  font-size: 12px;
+}
+.secao-recolhivel summary::after { color: var(--arcano-ouro); }
+.secao-recolhivel[open] summary { color: var(--arcano-ouro-claro); }
+.secao-recolhivel[open] summary::after { color: var(--arcano-ouro-claro); }
+
+/* Campos */
+.lateral input, .lateral select,
+.formulario-entrada input, .formulario-entrada select,
+.editor-entidade-privada input,
+.seletores-combate select,
+.controle-deslocamento-acoes input {
+  border-color: #2b3c49;
+  background: #071018;
+  color: #edf1f3;
+  box-shadow: inset 0 1px 4px #0005;
+}
+.lateral input:focus, .lateral select:focus,
+.formulario-entrada input:focus, .formulario-entrada select:focus,
+.editor-entidade-privada input:focus,
+.seletores-combate select:focus,
+.controle-deslocamento-acoes input:focus {
+  outline: none;
+  border-color: #b17d38;
+  box-shadow: 0 0 0 2px #c9933e19, inset 0 1px 4px #0005;
+}
+.botao-compacto, .botao-arquivo,
+.acoes-tema button,
+.acoes-visuais-futuras button,
+.controle-deslocamento-acoes button {
+  border-color: #3b4650;
+  background: linear-gradient(180deg, #111d26, #0b141c);
+  color: #dce3e7;
+}
+.botao-compacto:hover:not(:disabled), .botao-arquivo:hover,
+.acoes-tema button:hover:not(:disabled),
+.controle-deslocamento-acoes button:hover:not(:disabled) {
+  border-color: #916b35;
+  color: #f0c46d;
+  background: #14202a;
+}
+.botao-ativo {
+  border-color: #c9933e !important;
+  background: #2a2113 !important;
+  color: #f5cf7f !important;
+  box-shadow: inset 0 0 0 1px #c9933e26 !important;
+}
+
+/* Sessão e convite */
+.codigo-sessao { color: #f0c46d; text-shadow: 0 0 18px #d99f4728; }
+.qr-sessao {
+  padding: 8px;
+  border: 1px solid #c6a364;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 22px #0004;
+}
+.link-sessao { color: #75b6e5; }
+
+/* Mapa */
+.centro-mesa {
+  border-color: #6e5227;
+  box-shadow: 0 0 0 1px #c9933e0c, inset 0 0 40px #0004;
+}
+.viewport-mapa { background: #05090d; }
+.celula-grade { border-right-color: #bdd0dc4a; border-bottom-color: #bdd0dc4a; }
+.celula-grade:hover { background: #d6a64a18; box-shadow: inset 0 0 0 1px #e3b55d65; }
+.celula-grade.casa-destaque-movimento { background: #4fce7c22; box-shadow: inset 0 0 0 1px #5fe08b55; }
+.nome-mapa-flutuante {
+  border-color: #6d552d !important;
+  background: #071018e8 !important;
+  color: #e6c985 !important;
+  box-shadow: 0 7px 24px #0006;
+}
+.barra-ferramentas {
+  border-color: #67512d;
+  background: #061019e8;
+  color: #c7d0d6;
+  box-shadow: 0 7px 22px #0005;
+}
+.barra-ferramentas button {
+  border-color: #364552;
+  background: #0d1922;
+  color: #d8e0e4;
+}
+.controles-zoom {
+  border-color: #644d2b;
+  background: #061019e9;
+  box-shadow: 0 8px 24px #0008;
+}
+.controles-zoom button { border-color: #314250; background: #0d1922; }
+.controles-zoom button:hover:not(:disabled) { border-color: #b17d38; color: #f0c46d; background: #17222b; }
+.peca { box-shadow: 0 7px 18px #000b; }
+.peca-selecionada { outline-color: #f0c46d; box-shadow: 0 0 0 4px #d99d3829, 0 7px 18px #000b; }
+
+/* Divisores redimensionáveis - aparentes apenas o suficiente para descoberta */
+.divisor-layout { opacity: .5; transition: opacity .15s ease, background .15s ease; }
+.divisor-layout:hover { opacity: 1; }
+.divisor-layout span { background: #667684 !important; }
+.divisor-layout:hover span { background: #d0a24f !important; box-shadow: 0 0 8px #d0a24f66; }
+
+/* Jogador */
+.aplicacao-jogador .painel-jogador-simples { background: linear-gradient(180deg, #0b1620, #081119); }
+.avatar-jogador {
+  width: 70px;
+  height: 70px;
+  border-color: #c9933e;
+  box-shadow: 0 0 0 4px #c9933e10, 0 8px 24px #0005;
+}
+.linha-dado { padding: 10px 0; border-bottom-color: #20303d; }
+.linha-dado span { color: #a8b4bc; }
+.linha-dado b { color: #e9eef0; }
+.controle-deslocamento-jogador {
+  border-color: #283b49;
+  background: #071018;
+}
+.controle-tocha-jogador { margin: 9px 0; }
+.botao-tocha {
+  border-color: #40505c !important;
+  background: #0d1821 !important;
+}
+.botao-tocha-acesa {
+  border-color: #c37e2d !important;
+  color: #ffd792 !important;
+  background: #2b1c0d !important;
+  box-shadow: 0 0 20px #f09a2520;
+}
+
+/* Alvo / entidade */
+.cartao-entidade { border-bottom-color: #223441; }
+.retrato-entidade {
+  border-color: #b17d38;
+  background-color: #111a20;
+  box-shadow: 0 5px 18px #0007;
+}
+.editor-entidade-privada { border-top-color: #253743; }
+.botao-perigo { border-color: #773b3a; background: #281313; color: #ffaaa6; }
+
+/* Área inferior */
+.rodape-mesa { background: #040a0f; }
+.rodape-mesa > .painel,
+.painel-acoes-completas {
+  border-color: #263846;
+  background: linear-gradient(180deg, #0a151e, #071018);
+}
+.cabecalho-acoes-combate { border-bottom-color: #243642 !important; }
+.seletores-combate label { color: #9eabb5; }
+.resumo-acao-jogador > span { border-color: #293b48 !important; background: #071018 !important; }
+.acao-visual {
+  border-color: #344552 !important;
+  background: linear-gradient(180deg, #111d26, #0b141d) !important;
+  color: #dce4e8 !important;
+}
+.acao-visual:hover:not(:disabled) { border-color: #a47838 !important; color: #f0c46d !important; }
+.acao-espada span { color: #dce5ec; }
+.acao-flecha span { color: #c7d6df; }
+.acao-magia span { color: #b78cff; }
+
+.painel-magias { border-color: #273947 !important; background: #08121a !important; }
+.botao-gerenciar-magias { border-color: #715632 !important; color: #e9c779 !important; }
+.lista-magias-selecionadas { scrollbar-color: #465563 #081018; }
+.botao-magia { border-color: #293c49 !important; background: #09141c !important; }
+.botao-magia:hover { border-color: #775a95 !important; background: #121727 !important; }
+.botao-magia-selecionada { border-color: #9270bb !important; background: #191127 !important; box-shadow: inset 0 0 0 1px #6b4e8c !important; }
+.selo-magia, .selo-truque, .selo-acao-bonus, .selo-racial { box-shadow: inset 0 0 0 1px #ffffff08; }
+
+.historico h2 { color: #f0e5d3; }
+.lista-historico { padding-right: 4px; }
+.item-historico { border-bottom-color: #1c2b36; color: #d6dde1; }
+.item-historico:hover { background: #ffffff03; }
+.item-historico time { color: #718491; }
+.detalhes-historico summary { color: #b99558; }
+
+/* Entrada na sessão */
+.pagina-entrada-arcana,
+.pagina-inicial-arcana {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 15% 75%, #d0812624 0, transparent 24%),
+    radial-gradient(circle at 84% 22%, #284e6e66 0, transparent 32%),
+    linear-gradient(135deg, #090e12 0%, #07111a 44%, #081522 100%);
+}
+.pagina-entrada-arcana::before,
+.pagina-inicial-arcana::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .34;
+  background:
+    linear-gradient(90deg, transparent 0 8%, #d29a4410 8.1% 8.2%, transparent 8.3% 91.5%, #d29a4410 91.6% 91.7%, transparent 91.8%),
+    radial-gradient(ellipse at 50% 100%, #02060900 0 40%, #020609b8 92%);
+}
+.entrada-atmosfera {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 70%, #ff9b3330 0 1.2%, transparent 8%),
+    radial-gradient(circle at 82% 75%, #ff9b3320 0 1%, transparent 7%);
+  filter: blur(.2px);
+}
+.cartao-entrada-arcana {
+  position: relative;
+  z-index: 2;
+  width: min(560px, 100%);
+  padding: 28px 32px;
+  border: 1px solid #8a6531;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0a151edc, #071018f0);
+  box-shadow: 0 30px 90px #000b, inset 0 1px 0 #ffffff0b;
+  backdrop-filter: blur(16px);
+}
+.marca-entrada {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  font-size: 34px;
+  text-align: center;
+}
+.titulo-entrada-sessao {
+  margin: 0 0 8px;
+  color: #e9edf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  text-align: center;
+}
+.cartao-entrada-arcana .subtitulo { margin: 0 0 4px; line-height: 1.45; text-align: center; }
+.formulario-entrada { gap: 13px; }
+.formulario-entrada label { gap: 5px; color: #d9e0e4; font-size: 12px; }
+.formulario-entrada input,
+.formulario-entrada select { min-height: 42px; border-radius: 7px; padding: 9px 11px; }
+.formulario-entrada .botao-arquivo { min-height: 38px; }
+.cartao-entrada-arcana .botao-principal {
+  min-height: 46px;
+  border-color: #e0ae55;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #e0ad52, #b97825);
+  color: #171109;
+  box-shadow: inset 0 1px 0 #fff3, 0 8px 22px #0005;
+  font-weight: 800;
+}
+.cartao-entrada-arcana .botao-principal:hover { background: linear-gradient(180deg, #efbd62, #c98a31); }
+
+/* Foco/teclado */
+button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid #d7a24b;
+  outline-offset: 2px;
+}
+
+/* Tablet e telas menores */
+@media (max-width: 1050px) and (min-width: 761px) {
+  .barra-superior .selo-cabecalho:first-of-type { display: none; }
+  .identidade-sessao { max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+@media (max-width: 760px) {
+  .barra-superior {
+    height: 52px;
+    padding: 0 10px;
+    gap: 9px;
+  }
+  .marca-menor { font-size: 17px; }
+  .marca-menor .marca-simbolo { width: 24px; height: 24px; }
+  .barra-superior .identidade-sessao { display: none; }
+  .barra-superior .selo-cabecalho { border: 0; padding: 0; background: transparent; }
+  .barra-superior .indicador-online { display: none; }
+  .layout-jogador > .lateral {
+    display: block;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .layout-mestre > .lateral { display: block; max-height: 230px; overflow-y: auto; }
+  .centro-mesa { min-height: 56vh; }
+  .rodape-mesa { padding: 0 8px 8px; gap: 8px !important; }
+  .cartao-entrada-arcana { padding: 24px 18px; }
+  .marca-entrada { font-size: 29px; }
+  .tres-colunas-formulario { grid-template-columns: 1fr !important; }
+}
+
+/* Etapa 4.8 - aproximação fiel dos protótipos aprovados
+   A Mesa Arcana permanece um apoio VISUAL: movimento, alcance, áreas, efeitos e histórico
+   têm prioridade sobre dados tradicionais de ficha. */
+
+/* Hierarquia geral um pouco mais espaçosa, preservando o mapa como foco. */
+@media (min-width: 761px) {
+  .corpo-mesa-redimensionavel {
+    --altura-rodape-mesa: 242px;
+  }
+  .corpo-mesa-redimensionavel .layout-mestre,
+  .corpo-mesa-redimensionavel .layout-jogador {
+    padding: 8px 12px 4px !important;
+    gap: 6px !important;
+  }
+  .corpo-mesa-redimensionavel .rodape-mesa {
+    padding: 5px 12px 10px !important;
+    gap: 6px !important;
+  }
+}
+
+/* Mestre: o painel inferior vira efetivamente a central de ações visual. */
+.aplicacao-mestre .rodape-mesa > .acoes-combate {
+  padding: 13px;
+  overflow: auto;
+}
+.aplicacao-mestre .cabecalho-acoes-combate {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.aplicacao-mestre .cabecalho-acoes-combate h2 { font-size: 15px; }
+.aplicacao-mestre .seletores-combate {
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+.aplicacao-mestre .seletores-combate label { gap: 5px; }
+.aplicacao-mestre .seletores-combate select { min-height: 38px; }
+.acoes-mestre-grandes {
+  grid-template-columns: repeat(4, minmax(105px, 1fr)) !important;
+  gap: 9px !important;
+}
+.acoes-mestre-grandes .acao-visual {
+  min-height: 92px !important;
+  display: grid !important;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 10px 8px !important;
+  text-align: center;
+}
+.acoes-mestre-grandes .acao-visual > span { font-size: 28px !important; }
+.acoes-mestre-grandes .acao-visual > b { font-size: 12px; }
+.acoes-mestre-grandes .acao-visual > small {
+  max-width: 120px;
+  color: #8495a1;
+  font-size: 8px;
+  line-height: 1.25;
+}
+.acao-mover > span { color: #e3b85e; }
+.acao-visual-ativa {
+  border-color: #d3a24c !important;
+  background: linear-gradient(180deg, #2a2113, #17150f) !important;
+  box-shadow: inset 0 0 0 1px #d3a24c2c, 0 0 16px #b67a2520;
+}
+
+/* Entidade do mestre: deslocamento/tamanho em primeiro plano; ficha tradicional recolhida. */
+.editor-movimento-visual {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #2d4250;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0a1720, #071018);
+}
+.editor-movimento-visual .cabecalho-editor-privado { display: grid; gap: 2px; }
+.editor-movimento-visual .cabecalho-editor-privado strong { color: #f0d18c; font-size: 11px; }
+.editor-movimento-visual .cabecalho-editor-privado small { font-size: 8px; }
+.detalhes-ficha-opcional {
+  margin-top: 10px;
+  padding: 8px 9px;
+  border: 1px solid #263641;
+  border-radius: 7px;
+  background: #071017;
+}
+.detalhes-ficha-opcional > summary {
+  cursor: pointer;
+  color: #8f9faa;
+  font-size: 10px;
+  font-weight: 650;
+}
+.detalhes-ficha-opcional[open] > summary { margin-bottom: 8px; color: #c6b48f; }
+.detalhes-ficha-opcional > small { display: block; margin-bottom: 8px; font-size: 8px; line-height: 1.4; }
+.detalhes-ficha-opcional label { display: grid; gap: 3px; margin-top: 6px; color: #9eabb4; font-size: 9px; }
+.detalhes-ficha-opcional input { min-height: 30px; }
+
+/* Jogador: grande central de Ações e Magias, como no protótipo aprovado. */
+.painel-acoes-jogador-prototipo {
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+.cabecalho-painel-jogador {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 11px;
+  border-bottom: 1px solid #263a48;
+  background: linear-gradient(180deg, #0d1922, #09131b);
+}
+.cabecalho-painel-jogador > div { min-width: 0; display: grid; gap: 1px; }
+.cabecalho-painel-jogador h2 { margin: 0 !important; font-size: 14px !important; }
+.cabecalho-painel-jogador small { font-size: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.abas-painel-jogador { display: flex; align-items: center; gap: 5px; }
+.abas-painel-jogador button {
+  min-height: 30px;
+  padding: 4px 13px;
+  border: 1px solid #324451;
+  border-radius: 6px;
+  background: #0a141c;
+  color: #aab7bf;
+  font-size: 10px;
+  font-weight: 700;
+}
+.abas-painel-jogador button:hover { border-color: #866638; color: #ecd090; }
+.abas-painel-jogador .aba-ativa {
+  border-color: #bd8b3d;
+  background: #2b2113;
+  color: #f4cf7d;
+  box-shadow: inset 0 0 0 1px #c5944b22;
+}
+.conteudo-painel-jogador {
+  min-height: 0;
+  overflow: hidden;
+  padding: 8px;
+}
+.conteudo-painel-jogador > .painel,
+.conteudo-painel-jogador > .painel-magias {
+  height: 100%;
+  min-height: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Ações do jogador maiores, sem competir com uma ficha. */
+.conteudo-painel-jogador .acoes-combate-jogador {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  align-content: start;
+  gap: 8px;
+  padding: 3px !important;
+  overflow-y: auto;
+}
+.conteudo-painel-jogador .resumo-acao-jogador {
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.conteudo-painel-jogador .resumo-acao-jogador > span { min-height: 48px; padding: 7px 9px; }
+.conteudo-painel-jogador .botoes-acoes-visuais.duas-acoes {
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+  gap: 9px;
+}
+.conteudo-painel-jogador .acao-visual {
+  min-height: 80px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 3px;
+}
+.conteudo-painel-jogador .acao-visual > span { font-size: 25px; }
+.conteudo-painel-jogador .acao-visual > b { font-size: 11px; }
+.conteudo-painel-jogador .acao-visual > small { color: #8595a0; font-size: 8px; }
+.conteudo-painel-jogador .acao-racial-draconato { margin-top: 3px; }
+
+/* Magias ocupam a área grande e priorizam nome, tipo, alcance e área. */
+.conteudo-painel-jogador .painel-magias {
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  gap: 8px !important;
+  padding: 2px !important;
+}
+.conteudo-painel-jogador .cabecalho-magias strong { font-size: 12px; }
+.conteudo-painel-jogador .cabecalho-magias small { font-size: 8px; }
+.conteudo-painel-jogador .lista-magias {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  padding: 2px 6px 2px 2px;
+}
+.conteudo-painel-jogador .item-magia {
+  min-height: 54px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 8px;
+  padding: 7px 9px;
+  border-radius: 8px;
+}
+.conteudo-painel-jogador .icone-magia { font-size: 21px; }
+.conteudo-painel-jogador .nome-magia b { font-size: 11px; }
+.conteudo-painel-jogador .nome-magia small { font-size: 8px; }
+.conteudo-painel-jogador .selo-magia { min-height: 15px; font-size: 7px; }
+.conteudo-painel-jogador .magia-selecionada-resumo {
+  padding: 8px;
+  border: 1px solid #3c3150;
+  border-radius: 8px;
+  background: #100e17;
+}
+.conteudo-painel-jogador .magia-selecionada-resumo > div:first-child b { font-size: 12px; }
+.conteudo-painel-jogador .magia-selecionada-resumo > div:first-child small { font-size: 9px; }
+.conteudo-painel-jogador .magia-metricas span { min-height: 30px; align-items: center; font-size: 9px; }
+
+/* Lateral do jogador: somente dados que influenciam a visualização. */
+.aplicacao-jogador .painel-jogador-simples > .texto-secundario,
+.aplicacao-jogador .painel-jogador-simples > small:last-of-type { line-height: 1.45; }
+.aplicacao-jogador .controle-deslocamento-jogador {
+  margin-top: 8px;
+  padding: 9px;
+  border-radius: 8px;
+}
+.aplicacao-jogador .painel-efeitos-ativos { margin-top: 10px; }
+
+/* Alvo do jogador permanece deliberadamente enxuto: posição e identidade visual. */
+.aplicacao-jogador .lateral-direita .cartao-entidade { padding-top: 5px; }
+.aplicacao-jogador .lateral-direita .linha-dado { font-size: 11px; }
+.aplicacao-jogador .lateral-direita .texto-secundario {
+  padding: 10px;
+  border: 1px solid #233743;
+  border-radius: 7px;
+  background: #071018;
+  line-height: 1.45;
+}
+
+/* Tela de entrada mais próxima do protótipo, sem inventar fluxo de personagens salvos. */
+.cartao-entrada-arcana { width: min(520px, 100%); }
+.aviso-entrada-link {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border: 1px solid #2c4250;
+  border-radius: 7px;
+  background: #09141c;
+}
+.aviso-entrada-link > span { color: #e0b75f; font-size: 24px; text-align: center; }
+.aviso-entrada-link > div { display: grid; gap: 1px; }
+.aviso-entrada-link b { color: #e9edf0; font-size: 10px; }
+.aviso-entrada-link small { font-size: 8px; }
+.separador-formulario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #927d59;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.separador-formulario::before,
+.separador-formulario::after { content: ""; height: 1px; flex: 1; background: #2a3943; }
+
+/* Scrolls: cada área longa rola por conta própria e não empurra o grid. */
+.conteudo-painel-jogador,
+.conteudo-painel-jogador .lista-magias,
+.aplicacao-mestre .acoes-combate,
+.detalhes-ficha-opcional,
+.painel-jogador-simples,
+.lateral,
+.lateral-direita {
+  scrollbar-width: thin;
+  scrollbar-color: #526573 #081018;
+}
+.conteudo-painel-jogador::-webkit-scrollbar,
+.conteudo-painel-jogador .lista-magias::-webkit-scrollbar,
+.aplicacao-mestre .acoes-combate::-webkit-scrollbar,
+.detalhes-ficha-opcional::-webkit-scrollbar { width: 7px; }
+.conteudo-painel-jogador::-webkit-scrollbar-thumb,
+.conteudo-painel-jogador .lista-magias::-webkit-scrollbar-thumb,
+.aplicacao-mestre .acoes-combate::-webkit-scrollbar-thumb,
+.detalhes-ficha-opcional::-webkit-scrollbar-thumb { background: #526573; border-radius: 999px; }
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .acoes-mestre-grandes { grid-template-columns: repeat(2, minmax(120px, 1fr)) !important; }
+  .conteudo-painel-jogador .lista-magias { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .painel-acoes-jogador-prototipo { min-height: 330px; }
+  .cabecalho-painel-jogador { align-items: flex-start; flex-direction: column; }
+  .abas-painel-jogador { width: 100%; }
+  .abas-painel-jogador button { flex: 1; }
+  .conteudo-painel-jogador { min-height: 270px; overflow: visible; }
+  .conteudo-painel-jogador .lista-magias { grid-template-columns: 1fr 1fr; max-height: 220px; }
+  .conteudo-painel-jogador .item-magia { min-height: 50px; }
+  .acoes-mestre-grandes { grid-template-columns: repeat(2, 1fr) !important; }
+  .cartao-entrada-arcana { width: min(520px, 100%); }
+}
+
+/* Etapa 4.8.1 - correção do painel Ações e Magias do jogador */
+.painel-acoes-jogador-prototipo {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+}
+
+.conteudo-painel-jogador {
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 10px 12px 12px;
+  scrollbar-gutter: stable;
+}
+
+.conteudo-painel-jogador > .acoes-combate-jogador {
+  height: auto !important;
+  min-height: 100%;
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px !important;
+  padding: 2px 3px 10px !important;
+  overflow: visible !important;
+}
+
+.conteudo-painel-jogador .cabecalho-acoes-combate {
+  flex: 0 0 auto;
+  min-height: 26px;
+  margin-bottom: 0;
+}
+
+.conteudo-painel-jogador .resumo-acao-jogador {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+  gap: 10px;
+}
+
+.conteudo-painel-jogador .resumo-acao-jogador > span {
+  min-height: 52px;
+  display: grid;
+  align-content: center;
+  padding: 8px 10px;
+}
+
+.conteudo-painel-jogador .dica-acao-jogador {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 1px;
+  line-height: 1.45;
+}
+
+.conteudo-painel-jogador .botoes-acoes-visuais.duas-acoes {
+  flex: 0 0 auto;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.conteudo-painel-jogador .acao-visual {
+  min-height: 92px;
+  padding: 10px 8px;
+}
+
+.conteudo-painel-jogador .acao-racial-draconato {
+  flex: 0 0 auto;
+  margin-top: 0;
+  padding-top: 11px;
+}
+
+.conteudo-painel-jogador .botao-acao-racial {
+  min-height: 66px;
+  padding: 9px 10px;
+}
+
+.conteudo-painel-jogador .observacao-acao-racial {
+  display: block;
+  margin-top: 7px;
+  line-height: 1.45;
+}
+
+.conteudo-painel-jogador .preparacao-acao-racial {
+  margin-top: 8px;
+}
+
+/* Magias usam o mesmo espaço rolável sem criar uma segunda barra desnecessária. */
+.conteudo-painel-jogador > .painel-magias {
+  height: auto !important;
+  min-height: 100%;
+  overflow: visible !important;
+}
+
+.conteudo-painel-jogador .lista-magias {
+  max-height: none !important;
+  overflow: visible !important;
+  padding-right: 2px;
+}
+
+@media (max-width: 980px) and (min-width: 761px) {
+  .conteudo-painel-jogador .botoes-acoes-visuais.duas-acoes {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .painel-acoes-jogador-prototipo {
+    min-height: 360px;
+  }
+
+  .conteudo-painel-jogador {
+    min-height: 300px;
+    max-height: 58vh;
+    overflow-y: auto !important;
+    padding: 10px;
+  }
+
+  .conteudo-painel-jogador .botoes-acoes-visuais.duas-acoes {
+    grid-template-columns: 1fr;
+  }
+
+  .conteudo-painel-jogador .lista-magias {
+    grid-template-columns: 1fr !important;
+    max-height: none !important;
+  }
+}
+
+/* Etapa 4.9 - persistência de campanha */
+.acoes-persistencia-topo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.acoes-persistencia-topo button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #4a3a24;
+  border-radius: 7px;
+  background: #101820;
+  color: #d8c7a8;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.acoes-persistencia-topo button:hover:not(:disabled) {
+  border-color: #b88337;
+  color: #f0c46d;
+  background: #17212a;
+}
+.acoes-persistencia-topo button:disabled { opacity: .48; cursor: wait; }
+.input-arquivo-oculto { display: none !important; }
+
+.aviso-persistencia {
+  position: fixed;
+  top: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  max-width: min(720px, calc(100vw - 28px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px 9px 14px;
+  border: 1px solid #70552d;
+  border-radius: 8px;
+  background: #111b22f5;
+  color: #ead9ba;
+  box-shadow: 0 14px 40px #0008;
+}
+.aviso-persistencia button {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #c8b89c;
+  font-size: 20px;
+}
+.aviso-persistencia button:hover { background: #ffffff0b; color: #fff; }
+
+.fundo-modal-campanhas {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #02070bc7;
+  backdrop-filter: blur(5px);
+}
+.modal-campanhas {
+  width: min(660px, 100%);
+  max-height: min(720px, 86vh);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid #70552d;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #0d1820, #081118);
+  box-shadow: 0 30px 90px #000b, inset 0 1px 0 #ffffff0a;
+}
+.modal-campanhas > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #263744;
+}
+.modal-campanhas > header small { color: #b58b4a; text-transform: uppercase; letter-spacing: .08em; }
+.modal-campanhas > header h2 { margin: 3px 0 0; color: #f0e5d3; }
+.botao-fechar-modal {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #31424e;
+  border-radius: 7px;
+  background: #0a141c;
+  color: #cad4da;
+  font-size: 22px;
+}
+.texto-modal-campanhas { margin: 0; color: #94a4af; line-height: 1.5; }
+.lista-campanhas-salvas {
+  min-height: 120px;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: #465563 #0a1117;
+}
+.item-campanha-salva {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 13px;
+  border: 1px solid #263946;
+  border-radius: 8px;
+  background: #09141c;
+}
+.item-campanha-salva > div { min-width: 0; display: grid; gap: 4px; }
+.item-campanha-salva strong { color: #e8dfd0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-campanha-salva small { color: #8798a4; }
+.item-campanha-salva button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid #8b672e;
+  border-radius: 7px;
+  background: #1c1810;
+  color: #f0c46d;
+}
+
+@media (max-width: 1250px) and (min-width: 761px) {
+  .acoes-persistencia-topo button { padding: 0 7px; font-size: 11px; }
+  .barra-superior { gap: 9px; }
+}
+
+@media (max-width: 760px) {
+  .acoes-persistencia-topo { margin-left: auto; }
+  .acoes-persistencia-topo button:nth-of-type(3),
+  .acoes-persistencia-topo button:nth-of-type(4) { display: none; }
+  .barra-superior .botao-layout { display: none; }
+  .aviso-persistencia { top: 58px; }
+  .fundo-modal-campanhas { padding: 12px; }
+  .modal-campanhas { max-height: 90vh; padding: 14px; }
+  .item-campanha-salva { align-items: stretch; flex-direction: column; }
+  .item-campanha-salva button { width: 100%; }
+}
+
+
+/* Etapa 4.9.1 — seleção de personagens persistidos */
+.cartao-personagem-salvo {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(210, 160, 70, 0.35);
+  border-radius: 10px;
+  background: rgba(210, 160, 70, 0.06);
+}
+.cartao-personagem-salvo > div:last-child { display: grid; gap: 3px; min-width: 0; }
+.cartao-personagem-salvo small { color: var(--texto-secundario, #9eabb7); }
+.avatar-personagem-salvo {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background-color: #131d25;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(210, 160, 70, 0.7);
+  font-weight: 700;
+  color: #e8bd69;
+}
+.botao-perigo:disabled { opacity: 0.5; cursor: not-allowed; }
+
+
+/* Etapa 4.9.2 — biblioteca de entidades da campanha */
+.lista-biblioteca-entidades { display: grid; gap: 8px; margin-top: 10px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
+.item-biblioteca-entidade { display: grid; grid-template-columns: 34px minmax(0,1fr) auto auto; align-items: center; gap: 7px; padding: 7px; border: 1px solid var(--borda, #2f3b46); border-radius: 8px; background: rgba(8,14,20,.68); }
+.mini-token-biblioteca { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #a9782d; display: grid; place-items: center; background-size: cover; background-position: center; font-weight: 700; }
+.dados-biblioteca-entidade { min-width: 0; display: grid; gap: 2px; }
+.dados-biblioteca-entidade b, .dados-biblioteca-entidade small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-biblioteca-entidade button { padding: 6px 8px; min-height: 30px; font-size: .78rem; }
+.botao-perigo-minimo { border-color: rgba(190,65,65,.6)!important; color: #efaaaa!important; }
+.acoes-entidade-campanha { display: grid; gap: 8px; margin-top: 10px; }
+.botao-secundario { border-color: #485968; background: #111b23; color: #dce7ee; }
+@media (max-width: 900px) { .item-biblioteca-entidade { grid-template-columns: 32px minmax(0,1fr) auto; } .item-biblioteca-entidade .botao-perigo-minimo { grid-column: 2 / -1; } }
+
+
+/* Etapa 5.1 — diagnóstico e observabilidade do aplicativo */
+.botao-diagnostico-topo {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #3b5668;
+  border-radius: 7px;
+  background: #0d1820;
+  color: #bcd7e7;
+  font-size: 12px;
+}
+.botao-diagnostico-topo:hover { border-color: #7e9fb3; color: #edf8ff; }
+.pagina-diagnostico {
+  min-height: 100vh;
+  padding: 28px;
+  background: radial-gradient(circle at top, #17212a 0, #071019 36%, #06090c 100%);
+  color: #e8e4dc;
+}
+.cabecalho-diagnostico {
+  width: min(1180px, 100%);
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.cabecalho-diagnostico h1 { margin: 12px 0 5px; font: 700 28px/1.15 Georgia, serif; color: #f1e8d8; }
+.cabecalho-diagnostico p { margin: 0; max-width: 700px; color: #91a3af; line-height: 1.5; }
+.acoes-diagnostico { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.acoes-diagnostico button, .rodape-diagnostico button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #3d4f5b;
+  border-radius: 8px;
+  background: #101a22;
+  color: #d9e1e5;
+}
+.acoes-diagnostico .botao-principal-diagnostico {
+  border-color: #a97932;
+  background: linear-gradient(#8f652c, #69471f);
+  color: #fff6e4;
+  font-weight: 700;
+}
+.aviso-diagnostico, .resumo-diagnostico {
+  width: min(1180px, 100%);
+  margin: 0 auto 14px;
+  border-radius: 10px;
+  padding: 13px 15px;
+}
+.aviso-diagnostico { border: 1px solid #745d32; background: #2c2415; color: #f2d898; }
+.resumo-diagnostico { display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #334a58; background: #0c171f; }
+.resumo-diagnostico > div { display: grid; gap: 3px; }
+.resumo-diagnostico span:first-child { color: #8398a6; font-size: 12px; text-transform: uppercase; letter-spacing: .07em; }
+.resumo-diagnostico strong { font-size: 17px; }
+.resumo-ok { border-color: #2c6746; background: #0c1c16; }
+.resumo-atencao { border-color: #6d4c2b; background: #21170e; }
+.grade-diagnostico {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.cartao-diagnostico {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #293b47;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0d1820, #091118);
+  box-shadow: inset 0 1px 0 #ffffff08;
+}
+.cartao-diagnostico-largo { grid-column: 1 / -1; }
+.cartao-diagnostico > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.cartao-diagnostico h2 { margin: 0; font-size: 15px; color: #e9dfcf; }
+.cartao-diagnostico dl { margin: 0; display: grid; gap: 8px; }
+.cartao-diagnostico dl > div { display: grid; grid-template-columns: 130px minmax(0,1fr); gap: 12px; padding-top: 8px; border-top: 1px solid #20303a; }
+.cartao-diagnostico dt { color: #7f94a2; font-size: 12px; }
+.cartao-diagnostico dd { margin: 0; color: #dce4e8; overflow-wrap: anywhere; text-align: right; }
+.status-diagnostico { display: inline-grid; place-items: center; min-width: 54px; min-height: 27px; padding: 0 9px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+.status-ok { color: #95efad; border: 1px solid #2b6942; background: #10281a; }
+.status-falha { color: #ffb0a9; border: 1px solid #763e3a; background: #2c1514; }
+.texto-diagnostico { margin: 0; color: #93a4ae; }
+.lista-enderecos-diagnostico { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.lista-enderecos-diagnostico code { padding: 7px 9px; border: 1px solid #314654; border-radius: 6px; background: #071018; color: #b9d9ea; }
+.rodape-diagnostico {
+  width: min(1180px, 100%);
+  margin: 14px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: #8195a2;
+  font-size: 12px;
+}
+@media (max-width: 760px) {
+  .pagina-diagnostico { padding: 16px; }
+  .cabecalho-diagnostico { flex-direction: column; }
+  .acoes-diagnostico { width: 100%; }
+  .acoes-diagnostico button { flex: 1; }
+  .grade-diagnostico { grid-template-columns: 1fr; }
+  .cartao-diagnostico-largo { grid-column: auto; }
+  .cartao-diagnostico dl > div { grid-template-columns: 1fr; gap: 3px; }
+  .cartao-diagnostico dd { text-align: left; }
+  .rodape-diagnostico { align-items: stretch; flex-direction: column; }
+  .barra-superior .botao-diagnostico-topo { display: none; }
+}
+
+
+/* MVP Release Candidate */
+.botao-sobre-topo, .selo-inicial-mvp {
+  border: 1px solid #6d572e;
+  background: linear-gradient(180deg, #1a1812, #111317);
+  color: #d8bd77;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .055em;
+  white-space: nowrap;
+}
+.botao-sobre-topo { padding: 6px 10px; }
+.selo-inicial-mvp { margin: 3px auto 16px; padding: 7px 12px; cursor: pointer; }
+.botao-sobre-topo:hover, .selo-inicial-mvp:hover { border-color: #b28a45; color: #f0d998; }
+
+.pagina-sobre {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: radial-gradient(circle at 50% 10%, #14212a 0, #091117 43%, #05090d 100%);
+  color: #dce4e8;
+}
+.cartao-sobre {
+  width: min(850px, 100%);
+  border: 1px solid #4b412b;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(18,24,29,.98), rgba(8,13,17,.98));
+  box-shadow: 0 22px 70px rgba(0,0,0,.44);
+  padding: 28px;
+}
+.marca-sobre { display: flex; align-items: center; gap: 14px; }
+.marca-sobre h1 { margin: 0; color: #e6d099; font-family: Georgia, serif; font-size: 31px; }
+.marca-sobre p { margin: 5px 0 0; color: #8fa1aa; }
+.selo-versao-mvp {
+  display: inline-flex;
+  margin: 23px 0 15px;
+  padding: 7px 11px;
+  border: 1px solid #765f31;
+  border-radius: 999px;
+  background: #17150f;
+  color: #e4c875;
+  font-size: 12px;
+  font-weight: 800;
+}
+.informacoes-sobre { margin: 0; border: 1px solid #24323a; border-radius: 9px; overflow: hidden; }
+.informacoes-sobre > div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 11px 13px; border-top: 1px solid #1e2b32; }
+.informacoes-sobre > div:first-child { border-top: 0; }
+.informacoes-sobre dt { color: #778c98; }
+.informacoes-sobre dd { margin: 0; text-align: right; color: #e0e6e8; }
+.grade-sobre { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+.grade-sobre article { border: 1px solid #24323a; border-radius: 9px; padding: 14px; background: #0b1217; }
+.grade-sobre h2 { margin: 0 0 7px; font-size: 14px; color: #d8bd77; }
+.grade-sobre p { margin: 0; color: #91a0a8; line-height: 1.55; }
+.acoes-sobre { display: flex; justify-content: flex-end; gap: 9px; margin-top: 18px; }
+@media (max-width: 760px) {
+  .pagina-sobre { padding: 14px; }
+  .cartao-sobre { padding: 19px; }
+  .grade-sobre { grid-template-columns: 1fr; }
+  .informacoes-sobre > div { grid-template-columns: 1fr; gap: 4px; }
+  .informacoes-sobre dd { text-align: left; }
+  .acoes-sobre { flex-direction: column; }
+  .barra-superior .botao-sobre-topo { display: none; }
+}

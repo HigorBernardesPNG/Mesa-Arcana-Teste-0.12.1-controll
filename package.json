@@ -1,0 +1,81 @@
+{
+  "name": "mesa-arcana",
+  "version": "0.12.1-teste.1",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "aplicativos/*",
+    "servidor/*",
+    "pacotes/*"
+  ],
+  "scripts": {
+    "desenvolvimento": "concurrently -k -n SERVIDOR,WEB \"npm run desenvolvimento -w @mesa-rpg/servidor-local\" \"npm run desenvolvimento -w @mesa-rpg/interface-web\"",
+    "desenvolvimento:mestre": "concurrently -k -n SERVIDOR,WEB,DESKTOP \"npm run desenvolvimento -w @mesa-rpg/servidor-local\" \"npm run desenvolvimento -w @mesa-rpg/interface-web\" \"npm run desenvolvimento -w @mesa-rpg/mestre-desktop\"",
+    "construir": "npm run construir -w @mesa-rpg/interface-web && npm run construir -w @mesa-rpg/mestre-desktop",
+    "verificar": "npm run verificar --workspaces --if-present",
+    "construir:web": "npm run construir -w @mesa-rpg/interface-web",
+    "construir:desktop": "npm run construir -w @mesa-rpg/mestre-desktop",
+    "construir:aplicativo": "npm run construir:web && npm run construir:desktop",
+    "executar:aplicativo": "npm run construir:aplicativo && electron .",
+    "empacotar:diretorio": "npm run construir:aplicativo && electron-builder --dir",
+    "instalador:windows": "npm run validar:mvp && electron-builder --win nsis",
+    "validar:mvp": "npm run verificar && npm run construir:aplicativo",
+    "empacotar:mvp": "npm run validar:mvp && electron-builder --dir",
+    "pacote:windows": "npm run validar:mvp && electron-builder --win dir"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "typescript": "^7.0.2",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.25.10"
+  },
+  "description": "Mesa Arcana Teste - plataforma visual para RPG de mesa em rede local com validação remota de disponibilidade.",
+  "main": "aplicativos/mestre-desktop/dist/principal/principal.cjs",
+  "build": {
+    "appId": "br.com.mesaarcana.teste",
+    "productName": "Mesa Arcana Teste",
+    "asar": true,
+    "files": [
+      "aplicativos/mestre-desktop/dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "aplicativos/interface-web/dist",
+        "to": "web"
+      },
+      {
+        "from": "aplicativos/mestre-desktop/recursos/icone.png",
+        "to": "icone.png"
+      }
+    ],
+    "directories": {
+      "output": "dist-instalador"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "aplicativos/mestre-desktop/recursos/icone.ico",
+      "artifactName": "Mesa-Arcana-Teste-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Mesa Arcana Teste",
+      "deleteAppDataOnUninstall": false,
+      "perMachine": false,
+      "runAfterFinish": true
+    }
+  },
+  "productName": "Mesa Arcana Teste",
+  "author": "Mesa Arcana"
+}
